@@ -4,8 +4,9 @@ from git import Repo
 
 
 class CloneRepo:
-    def __init__(self) -> None:
+    def __init__(self, url) -> None:
         self.repo_dir = os.path.join(os.getcwd(), "RepoGPT/repo")
+        self.repo_url = url
 
     async def clone_repo(self):
         # Clone the repo
@@ -18,7 +19,7 @@ class CloneRepo:
             return self.repo_dir
         else:
             repo = Repo.clone_from(
-                "https://github.com/cyai/Hand_Motion_Detector", to_path=self.repo_dir
+                self.repo_url, to_path=self.repo_dir
             )
             return self.repo_dir
 
