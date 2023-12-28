@@ -28,10 +28,6 @@ RepoGPT is a tool that uses GPT-3 to answer questions about any GitHub repositor
 
 Just a heads up, this is a pet project, so don't expect perfection. But I promise it's a neat little tool to have fun with.
 
-### Example:
-
-For the video: https://www.youtube.com/watch?v=8Vt16kTtgm4
-
 **TO DO:**
 
 > Convert it into a package and publish it on PyPi
