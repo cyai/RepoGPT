@@ -3,3 +3,4 @@ env
 .DS_Store
 .vscode/
 LLM-Over-Code.ipynb
+RepoGPT/__pycache__/
