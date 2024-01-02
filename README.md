@@ -12,19 +12,36 @@ RepoGPT is a tool that uses GPT-3 to answer questions about any GitHub repositor
     ```bash
     pip install -r requirements.txt
     ```
--   **Set environmental variables**
+-   **Get your OpenAI API key**
 
-    -   Create a `.env` file in the root directory
-    -   Add the following variables to the file
-        ```bash
-        OPENAI_API_KEY=<your_openai_api_key>
-        ```
+    -   Go to [OpenAI](https://beta.openai.com/) and sign up for an account.
+    -   Create a new API key and copy it.
 
--   **Run the script**
+-   \*\*Install the `node` packages
+
     ```bash
-    python run.py
+    cd frontend
+    npm install
     ```
--   **Enter the Github Repo URL and start your conversation 😊**
+
+-   **Run the backend server**
+
+    ```bash
+    python server.py
+    ```
+
+-   **Run the frontend server**
+
+    ```bash
+    cd frontend
+    npm start
+    ```
+
+-   **Head to <i>http://localhost:3000/</i> and put your OpenAI Api Key and the Github URL and ask your questions.**
+
+---
+
+---
 
 Just a heads up, this is a pet project, so don't expect perfection. But I promise it's a neat little tool to have fun with.
 

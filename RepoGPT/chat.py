@@ -16,9 +16,11 @@ import openai
 
 
 class Chat:
-    def __init__(self) -> None:
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        self.embeddings = OpenAIEmbeddings(disallowed_special=(), openai_api_key=self.api_key)
+    def __init__(self, openai_api_key) -> None:
+        self.api_key = openai_api_key
+        self.embeddings = OpenAIEmbeddings(
+            disallowed_special=(), openai_api_key=self.api_key
+        )
 
     async def retrievalQA(self, texts: list):
         if os.path.exists(os.path.join(os.getcwd(), "RepoGPT/chroma_db")):
@@ -42,13 +44,16 @@ class Chat:
         return retriever
 
     async def chat(self, retriever, question):
-        llm = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key=self.api_key)
+        try:
+            llm = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key=self.api_key)
 
-        memory = ConversationSummaryMemory(
-            llm=llm, memory_key="chat_history", return_messages=True
-        )
-        qa = ConversationalRetrievalChain.from_llm(
-            llm, retriever=retriever, memory=memory
-        )
-        result = qa(question)
-        return result
+            memory = ConversationSummaryMemory(
+                llm=llm, memory_key="chat_history", return_messages=True
+            )
+            qa = ConversationalRetrievalChain.from_llm(
+                llm, retriever=retriever, memory=memory
+            )
+            result = qa(question)
+            return result
+        except openai.error.AuthenticationError as e:
+            return "Invalid API Key"
