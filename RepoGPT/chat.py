@@ -16,9 +16,11 @@ import openai
 
 
 class Chat:
-    def __init__(self) -> None:
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        self.embeddings = OpenAIEmbeddings(disallowed_special=(), openai_api_key=self.api_key)
+    def __init__(self, openai_api_key) -> None:
+        self.api_key = openai_api_key
+        self.embeddings = OpenAIEmbeddings(
+            disallowed_special=(), openai_api_key=self.api_key
+        )
 
     async def retrievalQA(self, texts: list):
         if os.path.exists(os.path.join(os.getcwd(), "RepoGPT/chroma_db")):

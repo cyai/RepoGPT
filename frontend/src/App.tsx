@@ -10,6 +10,7 @@ interface AppState {
     question: string;
     loading: boolean;
     isValidUrl?: boolean;
+    apiKey?: string;
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -19,6 +20,7 @@ class App extends React.Component<AppProps, AppState> {
         loading: false,
         apiResponse: "",
         isValidUrl: false,
+        apiKey: "",
     };
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +31,7 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({ repoUrl: url, isValidUrl });
     };
 
-    handelQuestion = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    handleQuestion = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const question = event.target.value;
         // console.log(question);
         this.setState({ question });
@@ -44,6 +46,7 @@ class App extends React.Component<AppProps, AppState> {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": this.state.apiKey,
                 },
                 body: JSON.stringify({
                     url: this.state.repoUrl,
@@ -64,6 +67,11 @@ class App extends React.Component<AppProps, AppState> {
         }
     };
 
+    handleApiKeyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const apiKey = event.target.value;
+        this.setState({ apiKey });
+    };
+
     render() {
         return (
             <div className="App bg-gradient-to-r from-gray-700 via-gray-900 to-black min-h-screen">
@@ -73,9 +81,10 @@ class App extends React.Component<AppProps, AppState> {
                         repoUrl={this.state.repoUrl}
                         handleInputChange={this.handleInputChange}
                         isValidUrl={this.state.isValidUrl}
-                        // handleSubmit={this.handleSubmit}
                         question={this.state.question}
-                        handelQuestion={this.handelQuestion}
+                        handleQuestion={this.handleQuestion}
+                        apiKey={this.state.apiKey}
+                        handleApiKeyChange={this.handleApiKeyChange}
                     />
                 </div>
                 <div>

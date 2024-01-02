@@ -14,6 +14,8 @@ CORS(app, supports_credentials=True)
 
 @app.route("/api/chat", methods=["POST"])
 def qa():
+    openai_api_key = request.headers.get("Authorization")
+
     url = request.json["url"]
     _clone_repo = CloneRepo(url)
     repo_path = asyncio.run(_clone_repo.clone_repo())
@@ -22,7 +24,7 @@ def qa():
     documents = asyncio.run(_load_files.process_files())
 
     question = request.json["question"]
-    bot = Chat()
+    bot = Chat(openai_api_key)
 
     retriver = asyncio.run(bot.retrievalQA(documents))
 

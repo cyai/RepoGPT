@@ -4,16 +4,29 @@ import { Component, ChangeEvent } from "react";
 interface RepoURLBoxProps {
     repoUrl: string;
     handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    handelQuestion: (event: ChangeEvent<HTMLTextAreaElement>) => void;
-    // handleSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    handleQuestion: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+    handleApiKeyChange: (event: ChangeEvent<HTMLInputElement>) => void;
     isValidUrl: boolean;
     question: string;
+    apiKey: string;
 }
 
 class RepoURLBox extends React.Component<RepoURLBoxProps> {
     render() {
         return (
             <>
+                <div className="box-border h-12 w-1/2 border-2 border-gray-500 rounded-md">
+                    <input
+                        className="h-10 w-full opacity-50 bg-transparent p-2 text-white font-mono align-middle"
+                        type="text"
+                        placeholder="Enter OpenAI API key..."
+                        value={this.props.apiKey || ""}
+                        onChange={(event) =>
+                            this.props.handleApiKeyChange(event)
+                        }
+                    />
+                </div>
+
                 <div className="box-border h-12 w-1/2 border-2 border-gray-500 rounded-md">
                     <input
                         className="h-10 w-full opacity-50 bg-transparent p-2 text-white font-mono align-middle"
@@ -33,7 +46,7 @@ class RepoURLBox extends React.Component<RepoURLBoxProps> {
                         placeholder="Enter a question..."
                         value={this.props.question || ""}
                         onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                            this.props.handelQuestion(event)
+                            this.props.handleQuestion(event)
                         }
                     ></textarea>
                 </div>
