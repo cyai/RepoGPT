@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, FormEvent } from "react";
 import Navbar from "./components/navbar";
 import RepoURLBox from "./components/chatBox";
 
@@ -6,17 +6,19 @@ interface AppProps {}
 
 interface AppState {
     repoUrl: string;
-    isValidUrl: boolean;
-    question: string;
     apiResponse: string;
+    question: string;
+    loading: boolean;
+    isValidUrl?: boolean;
 }
 
 class App extends React.Component<AppProps, AppState> {
     state = {
         repoUrl: "",
-        isValidUrl: false,
         question: "",
+        loading: false,
         apiResponse: "",
+        isValidUrl: false,
     };
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,50 +29,77 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({ repoUrl: url, isValidUrl });
     };
 
-    handleSubmit = () => {
-        if (this.state.isValidUrl) {
-            // Make API call to localhost:5000
-            fetch("http://localhost:5000/api/chat", {
+    handelQuestion = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const question = event.target.value;
+        // console.log(question);
+        this.setState({ question });
+    };
+
+    handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        this.setState({ loading: true });
+
+        try {
+            let response = await fetch("http://127.0.0.1:5000/api/chat", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     url: this.state.repoUrl,
-                    question: this.state.question
-                })
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    // Update state with API response
-                    this.setState({ apiResponse: data.answer });
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        }
-    };
+                    question: this.state.question,
+                }),
+            });
 
-    handelQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const question = event.target.value;
-        this.setState({ question });
+            if (response.ok) {
+                const data = await response.json();
+                this.setState({ apiResponse: data.answer, loading: false });
+            } else {
+                console.log("Error:", response.status);
+                this.setState({ loading: false });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            this.setState({ loading: false });
+        }
     };
 
     render() {
         return (
             <div className="App bg-gradient-to-r from-gray-700 via-gray-900 to-black min-h-screen">
                 <Navbar />
-
                 <div className="flex flex-col space-y-4 items-center justify-center h-full">
                     <RepoURLBox
                         repoUrl={this.state.repoUrl}
-                        isValidUrl={this.state.isValidUrl}
                         handleInputChange={this.handleInputChange}
-                        handleSubmit={this.handleSubmit}
+                        isValidUrl={this.state.isValidUrl}
+                        // handleSubmit={this.handleSubmit}
                         question={this.state.question}
-                        apiResponse={this.state.apiResponse}
-                        handelQuestion={this.handelQuestion} // Add the handelQuestion property
+                        handelQuestion={this.handelQuestion}
                     />
+                </div>
+                <div>
+                    <div className="flex flex-col items-center justify-center h-full p-4">
+                        <form onSubmit={this.handleSubmit}>
+                            {/* Your form fields here */}
+                            <button
+                                type="submit"
+                                className="opacity-50 bg-transparent p-2 text-white font-bold py-2 px-4 border-2 border-gray-500 rounded-md flex items-center justify-center"
+                            >
+                                {this.state.loading ? "Loading..." : "Submit"}
+                            </button>
+                        </form>
+
+                        {this.state.apiResponse && (
+                            <div className="box-border w-1/2 border-2 border-gray-500 rounded-md h-60 flex justify-center items-center pt-4 mt-4">
+                                <textarea
+                                    className="block p-2 w-full h-60 opacity-50 bg-transparent text-white font-mono"
+                                    value={this.state.apiResponse}
+                                    readOnly
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         );

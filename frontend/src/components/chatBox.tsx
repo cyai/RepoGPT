@@ -1,14 +1,13 @@
 import * as React from "react";
-import { Component } from "react";
+import { Component, ChangeEvent } from "react";
 
 interface RepoURLBoxProps {
     repoUrl: string;
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleSubmit: () => void;
+    handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    handelQuestion: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+    // handleSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
     isValidUrl: boolean;
     question: string;
-    handelQuestion: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    apiResponse: string;
 }
 
 class RepoURLBox extends React.Component<RepoURLBoxProps> {
@@ -32,27 +31,21 @@ class RepoURLBox extends React.Component<RepoURLBoxProps> {
                         id="message"
                         className="block p-2 w-full h-60 opacity-50 bg-transparent text-white font-mono align-middle"
                         placeholder="Enter a question..."
+                        value={this.props.question || ""}
+                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                            this.props.handelQuestion(event)
+                        }
                     ></textarea>
                 </div>
 
-                <div className="box-border w-1/2 border-2 border-gray-500 rounded-md h-60">
-                    <textarea
-                        id="message"
-                        className="block p-2 w-full h-60 opacity-50 bg-transparent text-white font-mono align-middle"
-                        placeholder="Answer..."
-                        value={this.props.apiResponse || ""}
-                        readOnly
-                    ></textarea>
-                </div>
-
-                {this.props.isValidUrl &&   (
+                {/* {this.props.isValidUrl && (
                     <button
                         className="opacity-50 bg-transparent p-2 text-white font-bold py-2 px-4 border-2 border-gray-500 rounded-md"
-                        onClick={this.props.handleSubmit}
+                        onClick={(event) => this.props.handleSubmit(event)}
                     >
                         Submit
                     </button>
-                )}
+                )} */}
             </>
         );
     }
