@@ -46,7 +46,7 @@ class App extends React.Component<AppProps, AppState> {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": this.state.apiKey,
+                    Authorization: this.state.apiKey,
                 },
                 body: JSON.stringify({
                     url: this.state.repoUrl,
@@ -57,6 +57,9 @@ class App extends React.Component<AppProps, AppState> {
             if (response.ok) {
                 const data = await response.json();
                 this.setState({ apiResponse: data.answer, loading: false });
+            } else if (response.status === 400) {
+                const data = await response.json();
+                this.setState({ apiResponse: data.error, loading: false });
             } else {
                 console.log("Error:", response.status);
                 this.setState({ loading: false });
@@ -90,7 +93,6 @@ class App extends React.Component<AppProps, AppState> {
                 <div>
                     <div className="flex flex-col items-center justify-center h-full p-4">
                         <form onSubmit={this.handleSubmit}>
-                            {/* Your form fields here */}
                             <button
                                 type="submit"
                                 className="opacity-50 bg-transparent p-2 text-white font-bold py-2 px-4 border-2 border-gray-500 rounded-md flex items-center justify-center"

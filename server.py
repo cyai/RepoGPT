@@ -30,6 +30,16 @@ def qa():
 
     response = asyncio.run(bot.chat(retriver, question))
 
+    if response == "Invalid API Key":
+        return (
+            jsonify(
+                {
+                    "error": "Invalid OpenAI API Key. Please check your key and try again."
+                }
+            ),
+            400,
+        )
+
     return jsonify({"answer": response["answer"]})
 
 
