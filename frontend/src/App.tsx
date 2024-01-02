@@ -8,6 +8,7 @@ interface AppState {
     repoUrl: string;
     isValidUrl: boolean;
     question: string;
+    apiResponse: string;
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -15,6 +16,7 @@ class App extends React.Component<AppProps, AppState> {
         repoUrl: "",
         isValidUrl: false,
         question: "",
+        apiResponse: "",
     };
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,8 +29,25 @@ class App extends React.Component<AppProps, AppState> {
 
     handleSubmit = () => {
         if (this.state.isValidUrl) {
-            // Perform submit action here
-            console.log("Submit button clicked!");
+            // Make API call to localhost:5000
+            fetch("http://localhost:5000/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    url: this.state.repoUrl,
+                    question: this.state.question
+                })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // Update state with API response
+                    this.setState({ apiResponse: data.answer });
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
         }
     };
 
@@ -49,7 +68,8 @@ class App extends React.Component<AppProps, AppState> {
                         handleInputChange={this.handleInputChange}
                         handleSubmit={this.handleSubmit}
                         question={this.state.question}
-                        handelQuestion={this.handelQuestion}
+                        apiResponse={this.state.apiResponse}
+                        handelQuestion={this.handelQuestion} // Add the handelQuestion property
                     />
                 </div>
             </div>
