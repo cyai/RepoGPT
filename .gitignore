@@ -4,3 +4,4 @@ env
 .vscode/
 LLM-Over-Code.ipynb
 RepoGPT/__pycache__
+./RepoGPT/repo/*
