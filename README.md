@@ -2,7 +2,17 @@
 
 RepoGPT is a tool that uses GPT-3 to answer questions about any GitHub repository. It uses the power of LLMs and Langchain framework to answer to any questions about any GitHub repository.
 
-### How do I use it?
+### DEMO: [https://repogpt.vardhaman.me/]()
+
+### How does it work?
+
+- It clones the repository locally.
+- It then goes through different files in the repo and split them accordingly.
+- Stores the data into a vector database (Chroma DB)
+- Runs a chatRetrivalChain to get the most relevant data for the question.
+- It then uses the OpenAI API to answer the questions.
+
+### How do I use it locally?
 
 -   **Clone the repo**
     ```bash
