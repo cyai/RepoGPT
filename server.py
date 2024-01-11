@@ -12,6 +12,11 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 
+@app.route("/")
+def hello_world():
+    return "Hello, World!"
+
+
 @app.route("/api/chat", methods=["POST"])
 def qa():
     openai_api_key = request.headers.get("Authorization")
