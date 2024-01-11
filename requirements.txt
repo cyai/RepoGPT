@@ -20,6 +20,10 @@ comm==0.1.4
 dataclasses-json==0.5.14
 debugpy==1.6.7.post1
 decorator==5.1.1
+Django==5.0
+django-cors-headers==4.3.1
+django-rest-framework==0.1.0
+djangorestframework==3.14.0
 executing==1.2.0
 fastapi==0.99.1
 Flask==3.0.0
