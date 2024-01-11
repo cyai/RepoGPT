@@ -1,6 +1,6 @@
 import os
 from git import Repo
-
+import shutil
 
 
 class CloneRepo:
@@ -18,9 +18,8 @@ class CloneRepo:
             print("Repo already cloned\nSkipping Cloning...")
             return self.repo_dir
         else:
-            repo = Repo.clone_from(
-                self.repo_url, to_path=self.repo_dir
-            )
+            repo = Repo.clone_from(self.repo_url, to_path=self.repo_dir)
+            shutil.rmtree(os.path.join(self.repo_dir, ".git"))
+            print("Repo cloned successfully")
+
             return self.repo_dir
-
-
