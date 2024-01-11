@@ -42,17 +42,20 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({ loading: true });
 
         try {
-            let response = await fetch("http://127.0.0.1:5000/api/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: this.state.apiKey,
-                },
-                body: JSON.stringify({
-                    url: this.state.repoUrl,
-                    question: this.state.question,
-                }),
-            });
+            let response = await fetch(
+                "https://repo-gpt-4599f227b840.herokuapp.com/api/chat",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: this.state.apiKey,
+                    },
+                    body: JSON.stringify({
+                        url: this.state.repoUrl,
+                        question: this.state.question,
+                    }),
+                }
+            );
 
             if (response.ok) {
                 const data = await response.json();
